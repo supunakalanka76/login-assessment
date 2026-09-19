@@ -35,8 +35,8 @@
     if (value.length < 6) {
         return 'Password must be at least 6 characters long';
     }
-    if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d) (?=.*[!@#$%^&*()-+])/.test(value)) {
-        return 'Password must contain at least one uppercase letter, one lowercase letter, special characters and one number';
+    if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(value)) {
+        return 'Password must contain at least one uppercase letter, one lowercase letter, and one number';
     }
 
     return '';

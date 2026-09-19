@@ -1,9 +1,61 @@
-import { Box, Container } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import {
+  Box,
+  CircularProgress,
+  Container,
+} from '@mui/material';
+
+import { onAuthStateChanged } from 'firebase/auth';
 
 import LoginForm from '../components/auth/LoginForm';
 import IllustrationPanel from '../components/layout/IllustrationPanel';
+import { auth } from '../config/firebase';
 
 const LoginPage = () => {
+  const navigate = useNavigate();
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(
+      auth,
+      (user) => {
+        if (user) {
+          navigate('/token', {
+            replace: true,
+          });
+
+          return;
+        }
+
+        setIsCheckingAuth(false);
+      },
+    );
+
+    return unsubscribe;
+  }, [navigate]);
+
+  if (isCheckingAuth) {
+    return (
+      <Box
+        sx={{
+          minHeight: '100vh',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <CircularProgress
+          size={32}
+          sx={{
+            color: '#111111',
+          }}
+        />
+      </Box>
+    );
+  }
+
   return (
     <Box
       component="main"
